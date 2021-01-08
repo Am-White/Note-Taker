@@ -40,8 +40,25 @@ app.get('api/notes', (req,res) => {
 });
 
 app.delete('/api/notes/:id', (req, res) => {
-    fs.readFile('.db/db.json', fucntion (err, data) {
-        
+    fs.readFile('.db/db.json', function (err, data) {
+        const json = JSON.parse(data);
+        console.log('json before: ' + json);
+
+        json.forEach(element => {
+            if (json.id === req.id){
+                const index = json.indexOf(element);
+                
+                if(index > -1) {
+                    json.splice(index, 1);
+                }
+            }
+            console.log('json after: ' + json);
+        });
+        fs.writeFileSync('.db/db.json', JSON.stringify(json));
+        res.json(json);
     })
 })
 
+app.listen(PORT, function () {
+    console.log("App listening on PORT " + PORT);
+});
