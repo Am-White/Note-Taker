@@ -1,7 +1,6 @@
 var express = require('express');
 var path = require('path');
 var fs = require('fs');
-const { response } = require('express');
 
 var app = express();
 var PORT = process.env.PORT || 3030;
@@ -19,11 +18,19 @@ app.get('/', (req, res) => {
 
 //Notes page
 app.get('/notes', (req, res) => {
-    //Connecting to html with noote
+    //Connecting to html with note
     res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 
-app.get('api/notes', (req,res) => {
+app.get('/api/notes', (req, res) => {
+    const data = fs.readFileSync('./db/db.json');
+    Notes = data;
+    const notes = JSON.parse(data);
+        res.json(notes)
+});
+
+//POST
+app.post('/api/notes', (req,res) => {
     //Request
     var newNote = req.body;
 
@@ -40,15 +47,17 @@ app.get('api/notes', (req,res) => {
 });
 
 app.delete('/api/notes/:id', (req, res) => {
-    fs.readFile('.db/db.json', function (err, data) {
+    fs.readFile('./db/db.json', function (err, data) {
+
         const json = JSON.parse(data);
         console.log('json before: ' + json);
 
         json.forEach(element => {
+
             if (json.id === req.id){
                 const index = json.indexOf(element);
                 
-                if(index > -1) {
+                if (index > -1) {
                     json.splice(index, 1);
                 }
             }
