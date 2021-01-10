@@ -1,11 +1,25 @@
-var path = require('path');
+var fs = require('fs');
+
+var data= fs.readFileSync("db/db.json");
+var notesData = JSON.parse(data);
 
 module.exports = function(app) {
-    app.get("/notes", function(req, res) {
-        res.sendFile(path.join(__dirname, "../public/notes.html"));
+    app.get("/api/notes", function(req,res) {
+        res.json(notesData);
     });
 
-    app.get("*", function(req, res) {
-        res.sendFile(path.join(__dirname, "../public/index.html"));
+    app.post("/api/notes", function(req,res) {
+        var newNotes = req.body;
+        newNotes.id = newNotes.title.replace(/\s+/g, "").toLowerCase();
+        notesData.push(newNotes);
+        fs.writeFileSync("db/db.json", JSON.stringify(notesData));
+        return res.json(newNotes);
+    });
+
+    app.delete("/api/notes/:id", function(req,res) {
+        var chosen = req.params.id;
+        notesData = notesData.filter(({ id }) => id != chosen);
+        fs.writeFileSync("db/db.json", JSON.stringify(notesData));
+        return res.json(true);
     });
 }
