@@ -9,13 +9,15 @@ An application that uses user input to create, save and delete notes.
 - [User Story](#user-story)
 - [Acceptance Criteria](#acceptance-criteria)
 - [Installation](#installation)
-- [License](#license)
+- [Test](#test)
 
 💻 HTML generated:
-![Live Application through Heroku](...)
+===================
+[Live Application through Heroku](https://appnote-taker.herokuapp.com/notes)
 
 🎥 Live demo:
-![Video Recording of App](...)
+==============================
+[Video Recording of App](https://drive.google.com/file/d/1WdpOtjPGlgsDrMF1KEnV3SPNfs5-BcSQ/view)
 
 ## User Story
 
@@ -41,4 +43,10 @@ In order to run this application for your use these will be required in the term
 - `npm i path`
 - `npm i moment`
 - `npm i fs`
+
+## Test
+
+In order to test from VS code:
+- `node server.js` in integrated terminal of server.js
+- `localhost:3030` in browser
 
